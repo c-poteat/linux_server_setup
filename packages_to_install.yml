@@ -5,6 +5,10 @@
   become: yes
 
   vars: 
+    vars: 
+    repo_url: "https://c-poteat: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@github.com/c-poteat/linux_server_setup.git"
+    local_path: ""
+    git_branch: "main"
     ip_address: ""
     yum_packages:
       - ansible-collection-redhat-rhel_mgmt
@@ -34,6 +38,14 @@
       - vim-enhanced
 
     tasks: 
+      - name: clone setup repository
+        git: 
+          repo: "{{ repo_url }}"
+          dest: "{{ local_path }}"
+          version: "{{ git_branch }}"
+          clone: yes
+          force: yes
+
       - name: execute bash script from GitHub
         command: 
         delegate_to: "{{ ip_address }}"
