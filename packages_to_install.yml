@@ -1,0 +1,46 @@
+---
+- name: environment setup for linux & windows servers
+  hosts: localhost
+  gather_facts: true
+  become: yes
+
+  vars: 
+    ip_address: ""
+    yum_packages:
+      - ansible-collection-redhat-rhel_mgmt
+      - dos2unix
+      - emacs-filesystem
+      - genisoimage
+      - git
+      - git-core-doc
+      - gpm-libs
+      - grub2-tools-efi
+      - jq
+      - katello-host-tools
+      - nano
+      - net-tools
+      - nmap
+      - nmap-cat
+      - onigurama
+      - perl-Error
+      - perl-Git
+      - python36
+      - python3-netaddr
+      - rsync
+      - strace
+      - traceroute
+      - tree
+      - vim-common
+      - vim-enhanced
+
+    tasks: 
+      - name: execute bash script from GitHub
+        command: 
+        delegate_to: "{{ ip_address }}"
+
+      - name: install packages via yum command
+        yum:
+          name: "{{ item }}"
+        state: present
+        loop: "{{ yum_packages }}"
+        delegate_to: "{{ ip_address }}"
