@@ -38,15 +38,7 @@
       - vim-enhanced
 
     tasks: 
-      - name: clone setup repository
-        git: 
-          repo: "{{ repo_url }}"
-          dest: "{{ local_path }}"
-          version: "{{ git_branch }}"
-          clone: yes
-          force: yes
-
-      - name: execute bash script from GitHub
+      - name: execute bash script from 
         command: 
         delegate_to: "{{ ip_address }}"
 

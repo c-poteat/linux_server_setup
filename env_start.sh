@@ -22,4 +22,4 @@ else
 fi 
 
 # Launch ansible playbook
-ansible-playbook packages_to_install.yml
+# ansible-playbook packages_to_install.yml
