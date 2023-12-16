@@ -16,10 +16,6 @@
 
 * The initial execution is the result of launching env_start.sh.
 
-## Help
-
-
-
 ## Authors
 
 Contributors names and contact info
