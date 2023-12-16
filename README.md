@@ -29,8 +29,8 @@ https://github.com/c-poteat
 ## Potential Adds / Changes
 
 Playbook to do the following:<br>
-Encrypt ssh keys using ansible vault<br> 
-Copy ssh public key into github with encryption<br>
+Encrypt ssh keys (private and public key) using ansible vault<br> 
+Copy ssh keys into github with encryption<br>
 Use playbook to decrypt ssh public key<br>
-transfer ssh public key to .ssh location on linux server<br>
+transfer ssh keys to .ssh location on linux server<br>
 change permissions for ssh key with chmod 600 ~/.ssh/id_rsa
