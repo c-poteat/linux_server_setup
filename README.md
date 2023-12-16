@@ -25,3 +25,12 @@ https://github.com/c-poteat
 ## Version History
 
 * 0.1 - Initial release
+
+## Potential Adds / Changes
+
+Playbook to do the following:
+Encrypt ssh keys using ansible vault 
+Copy ssh public key into github with encryption
+Use playbook to decrypt ssh public key 
+transfer ssh public key to .ssh location on linux server
+change permissions for ssh key with chmod 600 ~/.ssh/id_rsa
