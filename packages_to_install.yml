@@ -5,10 +5,12 @@
   become: yes
 
   vars: 
-    vars: 
+    files_to_decrypt:
+      - /home/ec2-user/.ssh/id_rsa.pub
+      - /home/ec2-user/.ssh/id_rsa
+    vault_password_file: /tmp/vault_key
+
     repo_url: "https://c-poteat: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@github.com/c-poteat/linux_server_setup.git"
-    local_path: ""
-    git_branch: "main"
     ip_address: ""
     yum_packages:
       - ansible-collection-redhat-rhel_mgmt
@@ -35,4 +37,23 @@
           name: "{{ item }}"
         state: present
         loop: "{{ yum_packages }}"
+        delegate_to: "{{ ip_address }}"
+      
+      - name: Download private key file from GitHub
+        get_url:
+          url: https://github.com/c-poteat/linux_server_setup/blob/main/key_private
+          dest: /home/ec2-user/.ssh/id_rsa
+          mode: '0400'  # Adjust the file permissions as necessary
+        delegate_to: "{{ ip_address }}"
+      
+      - name: Download public key file from GitHub
+        get_url:
+          url: https://github.com/c-poteat/linux_server_setup/blob/main/key_public
+          dest: /home/ec2-user/.ssh/id_rsa.pub
+          mode: '0400'  # Adjust the file permissions as necessary
+        delegate_to: "{{ ip_address }}"
+
+      - name: Decrypt the file
+        command:
+          cmd: ansible-vault decrypt /path/to/your/file --vault-password-file {{ vault_password_file }}
         delegate_to: "{{ ip_address }}"
