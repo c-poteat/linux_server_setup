@@ -33,6 +33,7 @@
         version: "{{ github_branch }}"
         clone: yes
         force: yes
+      delegate_to: "{{ ip_address }}"
       tags: 
         - clone_repo
 
@@ -40,6 +41,7 @@
       copy: 
         src: "{{ local_path }}"
         dest: "/tmp"
+      delegate_to: "{{ ip_address }}"
       tags: 
         - copy_repo
 
@@ -48,31 +50,38 @@
         path: "{{ tar_files }}"
         mode: "0755"
         recurse: yes
+      delegate_to: "{{ ip_address }}"
 
     - name: run bash script from remote server
       command: /bin/bash /tmp/env_start.sh
       tags:
         - bash_install
+      delegate_to: "{{ ip_address }}"
 
     - name: remove python36 packages
       dnf: 
         name: python36
         state: absent
+      delegate_to: "{{ ip_address }}"
       tags: 
         - remove_python36
+
 
     - name: install packages via yum command
       yum: 
         name: "{{ item }}"
       loop: "{{ packages_to_install }}"
+      delegate_to: "{{ ip_address }}"
       tags:
         - yum_install
+      
 
     - name: find tar files to extract
       find:
         paths: "{{ tar_files }}"
         patterns: "*.tar.gz"
       register: found_files
+      delegate_to: "{{ ip_address }}"
       tags: 
         - find_tar
 
@@ -82,6 +91,7 @@
         dest: "{{ tar_files }}"
         remote_src: yes
       loop: "{{ found_files.files }}"
+      delegate_to: "{{ ip_address }}"
       tags: 
         - extract_tar
 
@@ -91,6 +101,7 @@
         recurse: no
         file_type: directory
       register: extracted_folders
+      delegate_to: "{{ ip_address }}"
       tags: 
         - list_tar
 
@@ -119,6 +130,7 @@
         - /tmp/winrm_tar_files/requests-2.20.0
         - /tmp/winrm_tar_files/requests_ntlm-1.1.0
         - /tmp/winrm_tar_files/pywinrm-0.4.3
+      delegate_to: "{{ ip_address }}"
       tags: 
         - py_packages
 
