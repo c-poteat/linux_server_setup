@@ -1,0 +1,12 @@
+---
+- name: test winrm connection after packages install
+  hosts: win
+  gather_facts: yes
+
+  tasks: 
+    - name: ping windows system via winrm connection
+      win_ping:
+
+    - name: display ansible facts for windows machine
+      debug:
+        var: ansible_facts
