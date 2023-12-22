@@ -3,6 +3,9 @@
   hosts: localhost
   gather_facts: true
   become: yes
+  # Setup steps > Linux Control Node AAP or Ansible Tower > Linux Remote Machine
+  # > Windows Remote Machine > Packages are installed on remote linux machine
+  # The playbook is ran from Ansible AAP or tower GUI
 
   vars: 
     ip_address: ""
