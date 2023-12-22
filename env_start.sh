@@ -21,5 +21,6 @@ else
   echo "Item were already installed."
 fi 
 
+# Install git on rhel machine
 # Launch ansible playbook
 # ansible-playbook packages_to_install.yml

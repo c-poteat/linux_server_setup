@@ -8,11 +8,10 @@
   # The playbook is ran from Ansible AAP or tower GUI
 
   vars: 
-    ip_address: ""
     repo_url: "https://c-poteat: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@github.com/c-poteat/linux_server_setup.git"
     local_path: "/tmp/linux_server_setup"
     github_branch: "main"
-    tar_files: "/tmp/winrm_tar_files"
+    tar_files: "winrm_tar_files"
     packages_to_install:
       - ansible-collection-redhat-rhel_mgmt
       - dos2unix
@@ -26,117 +25,106 @@
       - vim-common
       - vim-enhanced
 
-    tasks: 
-      - name: clone linux environment setup repo
-        git: 
-          repo: "{{ repo_url }}"
-          dest: "{{ local_path }}"
-          version: "{{ github_branch }}"
-          clone: yes
-          force: yes
-        tags: 
-          - clone_repo
+  tasks: 
+    - name: clone linux environment setup repo
+      git: 
+        repo: "{{ repo_url }}"
+        dest: "{{ local_path }}"
+        version: "{{ github_branch }}"
+        clone: yes
+        force: yes
+      tags: 
+        - clone_repo
 
-      - name: copy repo files from control node to remote server
-        copy: 
-          src: "{{ local_path }}"
-          dest: "/tmp"
-        delegate_to: "{{ ip_address }}"
-        tags: 
-          - copy_repo
+    - name: copy repo files from control node to remote server
+      copy: 
+        src: "{{ local_path }}"
+        dest: "/tmp"
+      tags: 
+        - copy_repo
 
-      - name: update folder permissions
-        file: 
-          path: "{{ tar_files }}"
-          mode: "0755"
-          recurse: yes
-        delegate_to: "{{ ip_address }}"
+    - name: update folder permissions
+      file: 
+        path: "{{ tar_files }}"
+        mode: "0755"
+        recurse: yes
 
-      - name: run bash script from remote server
-        command: /bin/bash /tmp/env_start.sh
-        delegate_to: "{{ ip_address }}"
-        tags:
-          - bash_install
+    - name: run bash script from remote server
+      command: /bin/bash /tmp/env_start.sh
+      tags:
+        - bash_install
 
-      - name: remove python36 packages
-        dnf: 
-          name: python36
-          state: absent
-        tags: 
-          - remove_python36
+    - name: remove python36 packages
+      dnf: 
+        name: python36
+        state: absent
+      tags: 
+        - remove_python36
 
-      - name: install packages via yum command
-        yum: 
-          name: "{{ item }}"
-        loop: "{{ packages_to_install }}"
-        delegate_to: "{{ delegate_to }}"
-        tags:
-          - yum_install
+    - name: install packages via yum command
+      yum: 
+        name: "{{ item }}"
+      loop: "{{ packages_to_install }}"
+      tags:
+        - yum_install
 
-      - name: find tar files to extract
-        find:
-          paths: "{{ tar_files }}"
-          patterns: "*.tar.gz"
-        register: found_files
-        delegate_to: "{{ ip_address }}"
-        tags: 
-          - find_tar
+    - name: find tar files to extract
+      find:
+        paths: "{{ tar_files }}"
+        patterns: "*.tar.gz"
+      register: found_files
+      tags: 
+        - find_tar
 
-      - name: extract tar files
-        unarchive: 
-          src: "{{ item.path }}"
-          dest: "{{ tar_files }}"
-          remote_src: yes
-        loop: "{{ found_files.files }}"
-        delegate_to: "{{ ip_address }}"
-        tags: 
-          - extract_tar
+    - name: extract tar files
+      unarchive: 
+        src: "{{ item.path }}"
+        dest: "{{ tar_files }}"
+        remote_src: yes
+      loop: "{{ found_files.files }}"
+      tags: 
+        - extract_tar
 
-      - name: list extracted folders
-        find: 
-          paths: "{{ tar_files }}"
-          recurse: no
-          file_type: directory
-        register: extracted_folders
-        delegate_to: "{{ ip_address }}"
-        tags: 
-          - list_tar
+    - name: list extracted folders
+      find: 
+        paths: "{{ tar_files }}"
+        recurse: no
+        file_type: directory
+      register: extracted_folders
+      tags: 
+        - list_tar
 
-      - name: install python packages
-        command: >
-          python3 setup.py install
-        args: 
-          chdir: "{{ item }}"
-        with_items: 
-          - /tmp/winrm_tar_files/certifi-2023.11.17
-          - /tmp/winrm_tar_files/configobj-5.0.6
-          - /tmp/winrm_tar_files/file-magic-0.3.0
-          - /tmp/winrm_tar_files/PyJWT-1.6.1
-          - /tmp/winrm_tar_files/PyYAML-6.0.1
-          - /tmp/winrm_tar_files/six-1.11.0
-          - /tmp/winrm_tar_files/webencodings-0.5.1
-          - /tmp/winrm_tar_files/html5lib-0.999999999
-          - /tmp/winrm_tar_files/jsonpointer-1.10
-          - /tmp/winrm_tar_files/jsonpatch-1.21
-          - /tmp/winrm_tar_files/ntlm-auth-1.5.0
-          - /tmp/winrm_tar_files/oauthlib-2.1.0
-          - /tmp/winrm_tar_files/ptyprocess-0.5.2
-          - /tmp/winrm_tar_files/pexpect-4.3.1
-          - /tmp/winrm_tar_files/pyserial-3.1.1
-          - /tmp/winrm_tar_files/xmltodict-0.13.0
-          - /tmp/winrm_tar_files/requests-2.20.0
-          - /tmp/winrm_tar_files/requests_ntlm-1.1.0
-          - /tmp/winrm_tar_files/pywinrm-0.4.3
-        delegate_to: "{{ ip_address }}"
-        tags: 
-          - py_packages
+    - name: install python packages
+      command: >
+        python3 setup.py install
+      args: 
+        chdir: "{{ item }}"
+      with_items: 
+        - /tmp/winrm_tar_files/certifi-2023.11.17
+        - /tmp/winrm_tar_files/configobj-5.0.6
+        - /tmp/winrm_tar_files/file-magic-0.3.0
+        - /tmp/winrm_tar_files/PyJWT-1.6.1
+        - /tmp/winrm_tar_files/PyYAML-6.0.1
+        - /tmp/winrm_tar_files/six-1.11.0
+        - /tmp/winrm_tar_files/webencodings-0.5.1
+        - /tmp/winrm_tar_files/html5lib-0.999999999
+        - /tmp/winrm_tar_files/jsonpointer-1.10
+        - /tmp/winrm_tar_files/jsonpatch-1.21
+        - /tmp/winrm_tar_files/ntlm-auth-1.5.0
+        - /tmp/winrm_tar_files/oauthlib-2.1.0
+        - /tmp/winrm_tar_files/ptyprocess-0.5.2
+        - /tmp/winrm_tar_files/pexpect-4.3.1
+        - /tmp/winrm_tar_files/pyserial-3.1.1
+        - /tmp/winrm_tar_files/xmltodict-0.13.0
+        - /tmp/winrm_tar_files/requests-2.20.0
+        - /tmp/winrm_tar_files/requests_ntlm-1.1.0
+        - /tmp/winrm_tar_files/pywinrm-0.4.3
+      tags: 
+        - py_packages
 
-      - name: cleanup temporary files
-        file: 
-          path: "{{ local_path }}"
-          state: absent
-        tags: 
-          - cleanup
-
-- name: include playbook to test winrm connection
-  import_playbook: /tmp/test_winrm.yml
+    - name: cleanup temporary files
+      file: 
+        path: "{{ local_path }}"
+        state: absent
+      tags: 
+        - cleanup
