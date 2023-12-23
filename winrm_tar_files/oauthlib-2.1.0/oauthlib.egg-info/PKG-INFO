@@ -146,6 +146,6 @@ Classifier: Programming Language :: Python :: Implementation :: CPython
 Classifier: Programming Language :: Python :: Implementation :: PyPy
 Classifier: Topic :: Software Development :: Libraries :: Python Modules
 Provides-Extra: test
-Provides-Extra: signals
 Provides-Extra: signedtoken
+Provides-Extra: signals
 Provides-Extra: rsa

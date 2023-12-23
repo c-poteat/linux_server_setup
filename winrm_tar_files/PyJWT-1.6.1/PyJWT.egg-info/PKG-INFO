@@ -1,4 +1,4 @@
-Metadata-Version: 1.1
+Metadata-Version: 2.1
 Name: PyJWT
 Version: 1.6.1
 Summary: JSON Web Token implementation in Python
@@ -6,7 +6,6 @@ Home-page: http://github.com/jpadilla/pyjwt
 Author: Jose Padilla
 Author-email: hello@jpadilla.com
 License: MIT
-Description-Content-Type: UNKNOWN
 Description: PyJWT
         =====
         
@@ -101,3 +100,6 @@ Classifier: Programming Language :: Python :: 3.4
 Classifier: Programming Language :: Python :: 3.5
 Classifier: Programming Language :: Python :: 3.6
 Classifier: Topic :: Utilities
+Provides-Extra: flake8
+Provides-Extra: test
+Provides-Extra: crypto

@@ -3,6 +3,7 @@ COPYING
 MANIFEST.in
 README.md
 jsonpointer.py
+setup.cfg
 setup.py
 tests.py
 bin/jsonpointer

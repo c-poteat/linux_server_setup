@@ -4,6 +4,7 @@ MANIFEST.in
 Makefile
 README.md
 pyproject.toml
+setup.cfg
 setup.py
 examples/pygments-lexer/example.yaml
 examples/pygments-lexer/yaml.py

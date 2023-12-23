@@ -1,5 +1,6 @@
 README
 magic.py
+setup.cfg
 setup.py
 file_magic.egg-info/PKG-INFO
 file_magic.egg-info/SOURCES.txt

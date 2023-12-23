@@ -56,6 +56,11 @@
       tags: 
         - remove_python36
 
+    - name: Upgrade all packages with dnf
+      dnf:
+        name: "*"  # Indicates all packages
+        state: latest  # Ensures all packages are updated to the latest version
+
     - name: install packages via yum command
       yum: 
         name: "{{ item }}"

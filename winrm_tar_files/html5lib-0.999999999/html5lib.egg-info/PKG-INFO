@@ -1,10 +1,10 @@
-Metadata-Version: 1.1
+Metadata-Version: 2.1
 Name: html5lib
 Version: 0.999999999
 Summary: HTML parser based on the WHATWG HTML specification
 Home-page: https://github.com/html5lib/html5lib-python
-Author: James Graham
-Author-email: james@hoppipolla.co.uk
+Maintainer: James Graham
+Maintainer-email: james@hoppipolla.co.uk
 License: MIT License
 Description: html5lib
         ========
@@ -466,3 +466,8 @@ Classifier: Programming Language :: Python :: 3.4
 Classifier: Programming Language :: Python :: 3.5
 Classifier: Topic :: Software Development :: Libraries :: Python Modules
 Classifier: Topic :: Text Processing :: Markup :: HTML
+Provides-Extra: datrie
+Provides-Extra: genshi
+Provides-Extra: all
+Provides-Extra: lxml
+Provides-Extra: chardet
