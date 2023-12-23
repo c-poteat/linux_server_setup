@@ -1,3 +1,5 @@
+#!/bin/bash
+
 sudo dnf remove python36
 
 sudo yum install python39

@@ -19,7 +19,7 @@
       - git
       - git-core-doc
       - nano
-      - python39
+      # - python39
       - python3-netaddr
       - rsync
       - tree
@@ -44,26 +44,21 @@
         mode: "0755"
         recurse: yes
 
-    - name: run bash script from remote server
-      command: /bin/bash /tmp/linux_server_setup/env_start.sh
-      tags:
-        - bash_install
-
-    - name: remove python36 packages
-      dnf: 
-        name: python36
-        state: absent
-      tags: 
-        - remove_python36
+    # - name: remove python36 packages
+    #   dnf: 
+    #     name: python36
+    #     state: absent
+    #   tags: 
+    #     - remove_python36
 
     - name: Upgrade all packages with dnf
       dnf:
         name: "*"  # Indicates all packages
         state: latest  # Ensures all packages are updated to the latest version
 
-    - name: Install bottle python package
-      pip:
-        name: ansible-core==2.14
+    # - name: Install bottle python package
+    #   pip:
+    #     name: ansible-core==2.14
 
     - name: install packages via yum command
       yum: 
@@ -71,13 +66,6 @@
       loop: "{{ packages_to_install }}"
       tags:
         - yum_install
-
-    - name: remove python36 packages
-      yum: 
-        name: ansible
-        state: absent
-      tags: 
-        - remove_ansible
 
     - name: find tar files to extract
       find:
