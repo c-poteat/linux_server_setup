@@ -27,16 +27,16 @@
       - vim-enhanced
 
   tasks: 
-    - name: clone linux environment setup repo
-      git: 
-        repo: "{{ repo_url }}"
-        dest: "{{ local_path }}"
-        version: "{{ github_branch }}"
-        clone: yes
-        force: yes
-      remote_user: "{{ user }}"
-      tags: 
-        - clone_repo
+    # - name: clone linux environment setup repo
+    #   git: 
+    #     repo: "{{ repo_url }}"
+    #     dest: "{{ local_path }}"
+    #     version: "{{ github_branch }}"
+    #     clone: yes
+    #     force: yes
+    #   remote_user: "{{ user }}"
+    #   tags: 
+    #     - clone_repo
 
     - name: update folder permissions
       file: 
