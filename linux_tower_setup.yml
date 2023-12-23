@@ -18,7 +18,7 @@
       - git
       - git-core-doc
       - nano
-      - python38
+      - python39
       - python3-netaddr
       - rsync
       - tree
@@ -66,6 +66,14 @@
       tags: 
         - remove_python36
 
+    - name: Upgrade all packages with dnf
+      dnf:
+        name: "*"  # Indicates all packages
+        state: latest  # Ensures all packages are updated to the latest version
+
+    - name: Install bottle python package
+      pip:
+        name: ansible-core==2.14
 
     - name: install packages via yum command
       yum: 
@@ -74,7 +82,13 @@
       delegate_to: "{{ ip_address }}"
       tags:
         - yum_install
-      
+
+    - name: remove ansible version
+      yum: 
+        name: ansible
+        state: absent
+      tags: 
+        - remove_ansible 
 
     - name: find tar files to extract
       find:
