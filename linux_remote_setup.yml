@@ -1,0 +1,108 @@
+---
+- name: environment setup for linux & windows servers
+  hosts: localhost
+  gather_facts: true
+  become: yes
+  # Setup steps > Linux Control/Remote Machine > Windows Remote Machine 
+  # > Packages are installed on remote linux machine
+  # The playbook is ran from remote linux machine
+
+  vars: 
+    repo_url: ""
+    local_path: "/tmp/linux_server_setup"
+    github_branch: "main"
+    tar_files: "/winrm_tar_files"
+    packages_to_install:
+      - ansible-collection-redhat-rhel_mgmt
+      - dos2unix
+      - git
+      - git-core-doc
+      - nano
+      - python3-netaddr
+      - rsync
+      - tree
+      - vim-common
+      - vim-enhanced
+
+  tasks: 
+    - name: clone linux environment setup repo # need to copy SSH keys over to remote server first !!!
+      git: 
+        repo: "{{ repo_url }}"
+        dest: "{{ local_path }}"
+        version: "{{ github_branch }}"
+        clone: yes
+        force: yes
+      tags: 
+        - clone_repo
+
+    - name: update folder permissions
+      file: 
+        path: "{{ local_path }}/{{ tar_files }}"
+        mode: "0755"
+        recurse: yes
+
+    - name: Upgrade all packages with dnf
+      dnf:
+        name: "*"  # Indicates all packages
+        state: latest  # Ensures all packages are updated to the latest version
+
+    - name: install packages via yum command
+      yum: 
+        name: "{{ item }}"
+      loop: "{{ packages_to_install }}"
+      tags:
+        - yum_install
+
+    - name: find tar files to extract
+      find:
+        paths: "{{ local_path }}/{{ tar_files }}"
+        patterns: "*.tar.gz"
+      register: found_files
+      tags: 
+        - find_tar
+
+    - name: extract tar files
+      unarchive: 
+        src: "{{ item.path }}"
+        dest: "{{ local_path }}/{{ tar_files }}"
+        remote_src: yes
+      loop: "{{ found_files.files }}"
+      tags: 
+        - extract_tar
+
+    - name: list extracted folders
+      find: 
+        paths: "{{ local_path }}/{{ tar_files }}"
+        recurse: no
+        file_type: directory
+      register: extracted_folders
+      tags: 
+        - list_tar
+
+    - name: install python packages
+      command: >
+        python3 setup.py install
+      args: 
+        chdir: "{{ item }}"
+      with_items: 
+        - "{{ local_path }}/{{ tar_files }}/certifi-2023.11.17"
+        - "{{ local_path }}/{{ tar_files }}/configobj-5.0.6"
+        - "{{ local_path }}/{{ tar_files }}/file-magic-0.3.0"
+        - "{{ local_path }}/{{ tar_files }}/PyJWT-1.6.1"
+        - "{{ local_path }}/{{ tar_files }}/PyYAML-6.0.1"
+        - "{{ local_path }}/{{ tar_files }}/six-1.11.0"
+        - "{{ local_path }}/{{ tar_files }}/webencodings-0.5.1"
+        - "{{ local_path }}/{{ tar_files }}/html5lib-0.999999999"
+        - "{{ local_path }}/{{ tar_files }}/jsonpointer-1.10"
+        - "{{ local_path }}/{{ tar_files }}/jsonpatch-1.21"
+        - "{{ local_path }}/{{ tar_files }}/ntlm-auth-1.5.0"
+        - "{{ local_path }}/{{ tar_files }}/oauthlib-2.1.0"
+        - "{{ local_path }}/{{ tar_files }}/ptyprocess-0.5.2"
+        - "{{ local_path }}/{{ tar_files }}/pexpect-4.3.1"
+        - "{{ local_path }}/{{ tar_files }}/pyserial-3.1.1"
+        - "{{ local_path }}/{{ tar_files }}/xmltodict-0.13.0"
+        - "{{ local_path }}/{{ tar_files }}/requests-2.20.0"
+        - "{{ local_path }}/{{ tar_files }}/requests_ntlm-1.1.0"
+        - "{{ local_path }}/{{ tar_files }}/pywinrm-0.4.3"
+      tags: 
+        - py_packages

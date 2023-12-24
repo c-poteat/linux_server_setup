@@ -1,9 +1,9 @@
 [win]
-54.167.175.195
+ip_address
 
 [win:vars]
 ansible_connection=winrm
 ansible_user=Administrator
-ansible_password=NLg7LXxES=r?-GPdZ%CjT;SsKpCRJePp
+ansible_password=
 ansible_winrm_server_cert_validation=ignore
 ansible_port=5985
