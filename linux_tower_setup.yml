@@ -52,7 +52,7 @@
 
     - name: update folder permissions
       file: 
-        path: "{{ tar_files }}"
+        path: "{{ local_path }}/{{ tar_files }}"
         mode: "0755"
         recurse: yes
       delegate_to: "{{ ip_address }}"
@@ -61,10 +61,6 @@
       dnf:
         name: "*"  # Indicates all packages
         state: latest  # Ensures all packages are updated to the latest version
-
-    - name: Install ansible package
-      pip:
-        name: ansible-core==2.14
 
     - name: install packages via yum command
       yum: 
@@ -76,7 +72,7 @@
 
     - name: find tar files to extract
       find:
-        paths: "{{ tar_files }}"
+        paths: "{{ local_path }}/{{ tar_files }}"
         patterns: "*.tar.gz"
       register: found_files
       delegate_to: "{{ ip_address }}"
@@ -86,7 +82,7 @@
     - name: extract tar files
       unarchive: 
         src: "{{ item.path }}"
-        dest: "{{ tar_files }}"
+        dest: "{{ local_path }}/{{ tar_files }}"
         remote_src: yes
       loop: "{{ found_files.files }}"
       delegate_to: "{{ ip_address }}"
@@ -95,7 +91,7 @@
 
     - name: list extracted folders
       find: 
-        paths: "{{ tar_files }}"
+        paths: "{{ local_path }}/{{ tar_files }}"
         recurse: no
         file_type: directory
       register: extracted_folders
