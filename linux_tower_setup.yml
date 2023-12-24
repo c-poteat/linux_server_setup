@@ -11,7 +11,7 @@
     repo_url: ""
     local_path: "/tmp/linux_server_setup"
     github_branch: "main"
-    tar_files: "/winrm_tar_files"
+    tar_files: "winrm_tar_files"
     packages_to_install:
       - ansible-collection-redhat-rhel_mgmt
       - dos2unix
