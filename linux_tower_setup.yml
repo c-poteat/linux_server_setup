@@ -8,6 +8,7 @@
   # The playbook is ran from Ansible AAP or tower GUI
 
   vars: 
+    ip_address: ""
     repo_url: ""
     local_path: "/tmp/linux_server_setup"
     github_branch: "main"
@@ -32,7 +33,6 @@
         version: "{{ github_branch }}"
         clone: yes
         force: yes
-      delegate_to: "{{ ip_address }}"
       tags: 
         - clone_repo
 
@@ -55,12 +55,16 @@
         path: "{{ local_path }}/{{ tar_files }}"
         mode: "0755"
         recurse: yes
+      tags:
+        - fold_perm
       delegate_to: "{{ ip_address }}"
-
+      
     - name: Upgrade all packages with dnf
       dnf:
         name: "*"  # Indicates all packages
         state: latest  # Ensures all packages are updated to the latest version
+      tags:
+        - dnf_update
 
     - name: install packages via yum command
       yum: 
