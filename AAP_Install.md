@@ -55,7 +55,7 @@ ping aap.localhost.com
 rm -rf inventory
 ```
 
-### Paste the following contents and 
+### Paste the following contents for new inventory file
 ```
 [automationcontroller]
 aap.localhost.com ansible_connection=local
@@ -89,7 +89,7 @@ https://[Server IP]/#/login
 
 ### Notes 
 
-AAP was not working originally due to ansible-core 2.14 so I ran the command
+AAP was not installing correctly initially due to ansible-core version so I ran the command
 ```
 sudo dnf downgrade ansible-core 2.13
 ```
