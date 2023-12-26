@@ -1,10 +1,10 @@
-# RHEL AAP Install Instructions
+## RHEL AAP Install Instructions
 
-## Find AWS AMI
+### Find AWS AMI
 RHEL_HA-8.6.0_HVM-20230118-x86_64-30-Hourly2-GP2
 ami-09b659801c07f881c
 
-## Download AAP Setup File
+### Download AAP Setup File
 
 ### Install subscription manager
 ```
@@ -89,15 +89,23 @@ https://[Server IP]/#/login
 
 ### Notes 
 
-AAP was not working originally due to ansible-core 2.14 so I ran the command 
+AAP was not working originally due to ansible-core 2.14 so I ran the command
 ```
-sudo dnf downgrade ansible-core-2.13.3
+sudo dnf downgrade ansible-core 2.13
 ```
+
+Can also use the upgrade command as well
+```
+sudo dnf upgrade ansible-core 2.14
+```
+
+Ultimatley need ansible-core version 2.14 in order to perform testing on windows modules.
+
 
 ### Run the following command to see the list of ansible-core packages
 ```
 sudo dnf --showduplicates list ansible-core
 ```
 
-Need to downgrade to 2.14 in order to perform testing on windows modules
+
 
