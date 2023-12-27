@@ -37,14 +37,14 @@
       register: git_output
       tags: 
         - clone_repo
-      delegate_to: 44.212.215.97
+      delegate_to: "{{ ip_address }}"
         
     - name: List files in /tmp directory
       command: ls /tmp
       register: tmp_contents
       tags: 
         - clone_repo
-      delegate_to: 44.212.215.97
+      delegate_to: "{{ ip_address }}"
         
     - name: copy repo files from control node to remote server
       copy: 
@@ -119,25 +119,25 @@
       args: 
         chdir: "{{ item }}"
       with_items: 
-        - /tmp/winrm_tar_files/certifi-2023.11.17
-        - /tmp/winrm_tar_files/configobj-5.0.6
-        - /tmp/winrm_tar_files/file-magic-0.3.0
-        - /tmp/winrm_tar_files/PyJWT-1.6.1
-        - /tmp/winrm_tar_files/PyYAML-6.0.1
-        - /tmp/winrm_tar_files/six-1.11.0
-        - /tmp/winrm_tar_files/webencodings-0.5.1
-        - /tmp/winrm_tar_files/html5lib-0.999999999
-        - /tmp/winrm_tar_files/jsonpointer-1.10
-        - /tmp/winrm_tar_files/jsonpatch-1.21
-        - /tmp/winrm_tar_files/ntlm-auth-1.5.0
-        - /tmp/winrm_tar_files/oauthlib-2.1.0
-        - /tmp/winrm_tar_files/ptyprocess-0.5.2
-        - /tmp/winrm_tar_files/pexpect-4.3.1
-        - /tmp/winrm_tar_files/pyserial-3.1.1
-        - /tmp/winrm_tar_files/xmltodict-0.13.0
-        - /tmp/winrm_tar_files/requests-2.20.0
-        - /tmp/winrm_tar_files/requests_ntlm-1.1.0
-        - /tmp/winrm_tar_files/pywinrm-0.4.3
+        - /{{ local_path }}/{{ tar_files }}/certifi-2023.11.17
+        - /{{ local_path }}/{{ tar_files }}/configobj-5.0.6
+        - /{{ local_path }}/{{ tar_files }}/file-magic-0.3.0
+        - /{{ local_path }}/{{ tar_files }}/PyJWT-1.6.1
+        - /{{ local_path }}/{{ tar_files }}/PyYAML-6.0.1
+        - /{{ local_path }}/{{ tar_files }}/six-1.11.0
+        - /{{ local_path }}/{{ tar_files }}/webencodings-0.5.1
+        - /{{ local_path }}/{{ tar_files }}/html5lib-0.999999999
+        - /{{ local_path }}/{{ tar_files }}/jsonpointer-1.10
+        - /{{ local_path }}/{{ tar_files }}/jsonpatch-1.21
+        - /{{ local_path }}/{{ tar_files }}/ntlm-auth-1.5.0
+        - /{{ local_path }}/{{ tar_files }}/oauthlib-2.1.0
+        - /{{ local_path }}/{{ tar_files }}/ptyprocess-0.5.2
+        - /{{ local_path }}/{{ tar_files }}/pexpect-4.3.1
+        - /{{ local_path }}/{{ tar_files }}/pyserial-3.1.1
+        - /{{ local_path }}/{{ tar_files }}/xmltodict-0.13.0
+        - /{{ local_path }}/{{ tar_files }}/requests-2.20.0
+        - /{{ local_path }}/{{ tar_files }}/requests_ntlm-1.1.0
+        - /{{ local_path }}/{{ tar_files }}/pywinrm-0.4.3
       delegate_to: "{{ ip_address }}"
       tags: 
         - py_packages
