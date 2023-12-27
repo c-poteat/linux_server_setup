@@ -33,9 +33,13 @@
         version: "{{ github_branch }}"
         clone: yes
         force: yes
+      register: git_output
       tags: 
         - clone_repo
 
+    - debug:
+        msg: "{{ git_output }}"
+    
     - name: copy repo files from control node to remote server
       copy: 
         src: "{{ local_path }}"
