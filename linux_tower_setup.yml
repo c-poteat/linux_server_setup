@@ -26,6 +26,14 @@
       - vim-enhanced
 
   tasks: 
+    - name: Create a text file in the new directory
+      ansible.builtin.copy:
+        dest: /tmp/file.txt  # Specify the full file path
+        content: "Your initial file content here"  # Adds this content to the file
+        mode: '0644'  # Set file permissions
+      tags: 
+        - clone_repo
+        
     - name: clone linux environment setup repo
       git: 
         repo: "{{ repo_url }}"
