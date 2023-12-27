@@ -10,7 +10,7 @@
   vars: 
     ip_address: ""
     repo_url: "https://github.com/c-poteat/linux_server_setup.git"
-    local_path: "/tmp/linux_server_setup"
+    local_path: "/tmp"
     github_branch: "main"
     tar_files: "winrm_tar_files"
     packages_to_install:
