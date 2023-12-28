@@ -107,5 +107,20 @@ Ultimatley need ansible-core version 2.14 in order to perform testing on windows
 sudo dnf --showduplicates list ansible-core
 ```
 
+## PYWinrm or Requests won't work since python 3.11 is installed with ansible-core 
+```
+/usr/bin/python3.11 -m pip install pywinrm
+```
+
+### Install / Upgrade pip for python 3.11
+```
+/usr/bin/python3.11 -m ensurepip
+```
+
+```
+/usr/bin/python3.11 -m pip install --upgrade pip
+```
+
+/usr/bin/python3.11 -m pip install pywinrm
 
 
